@@ -34,7 +34,7 @@ jobs:
     - name: 📦 Install Newman
       run: npm install -g newman
 
-    - name: Install Newman Reporter
+    - name: 📦 Install Newman Reporter
       run: npm install -g newman-reporter-html
 
     - name: ▶️ Run Newman tests with HTML Report
@@ -44,3 +44,9 @@ jobs:
           -d data/data.json \
           -r cli,html \
           --reporter-html-export tests/report.html || true
+
+    - name: 📤 Upload HTML Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: newman-html-report
+        path: tests/report.html
