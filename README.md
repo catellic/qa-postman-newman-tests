@@ -27,9 +27,9 @@ Install Newman globally:
 ```bash
 npm install -g newman
 ```
-You can run the postman collection clicking on the following badge:
-
-![Newman Tests](https://github.com/catellic/qa-postman-newman-tests/actions/workflows/newman-tests.yml)
+You can run the postman collection manually using the github action configured.
+Following you can see last test result:
+![Run Newman Tests](https://github.com/catellic/qa-postman-newman-tests/actions/workflows/newman-tests.yml/badge.svg)
 
 ---
 
