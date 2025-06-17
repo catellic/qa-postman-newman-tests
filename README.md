@@ -4,14 +4,14 @@ This repository contains a Postman collection that automates testing of the [Req
 
 ### ✅ Covered Test Scenarios
 -  User
-- `GET /users/:id` – Retrieve a single user
-- `POST /users` – Create a user
-- `PUT /users/:id` – Update user details
-- `DELETE /users/:id` – Delete a user
+-- `GET /users/:id` – Retrieve a single user
+-- `POST /users` – Create a user
+-- `PUT /users/:id` – Update user details
+-- `DELETE /users/:id` – Delete a user
 
 -  Auth
-- `POST /register` – Register a new user
-- `POST /login` – Login with a username and password
+-- `POST /register` – Register a new user
+-- `POST /login` – Login with a username and password
 
 - 🧪 Data-driven tests with `data/data.json`
 
