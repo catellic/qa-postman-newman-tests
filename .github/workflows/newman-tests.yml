@@ -14,7 +14,7 @@ on:
         default: "environments/dev.postman_environment.json"
 
       data:
-        description: "Optional path to data file (JSON or CSV)"
+        description: "Path to data file (JSON or CSV)"
         required: true
         default: "data/data.json"
 
