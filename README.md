@@ -1,19 +1,39 @@
-# 🔄 API Tests with Postman & Newman
+# 🔄 API Test Automation with Postman & Newman
 
-This repository contains a Postman collection that automates testing of the [ReqRes](https://reqres.in) public API.
+This repository contains two API testing projects built with Postman and executed via Newman + GitHub Actions.
 
-### ✅ Covered Test Scenarios
-User
-- `GET /users/:id` – Retrieve a single user
-- `POST /users` – Create a user
-- `PUT /users/:id` – Update user details
-- `DELETE /users/:id` – Delete a user
+- ✅ **`projects/reqres/`** – A project to test the [ReqRes](https://reqres.in) API
+- 🔐 **`projects/fakestore/`** – A more advanced project with authentication and chained requests using [Fake Store API](https://fakestoreapi.com)
 
-Auth
-- `POST /register` – Register a new user
-- `POST /login` – Login with a username and password
+---
+## 📦 Projects Overview
 
-- 🧪 Data-driven tests with `data/data.json`
+### 🔹 1. ReqRes – Basic User Flow
+
+📁 `projects/reqres-basic/`  
+This project tests the ReqRes demo API with a simple CRUD flow for users.
+
+**Test coverage:**
+- `GET /users/:id`
+- `POST /users`
+- `PUT /users/:id`
+- `DELETE /users/:id`
+- 🔁 Data-driven tests using `data.json`
+- ✅ Fully CI-integrated
+
+---
+
+### 🔹 2. Fake Store – Advanced Flow
+
+📁 `projects/fakestore-advanced/`  
+This project focuses on authentication, product and user management, using real-world flows such as:
+
+**Planned coverage:**
+- `POST /auth/login` → Save and reuse token
+- `GET /products`, `GET /carts/user/:id`
+- ❌ Negative test cases (invalid login, unauthorized access)
+- 🔁 Data-driven scenarios with chaining
+- 🔐 Header injection + variable scoping
 
 ---
 
