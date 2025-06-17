@@ -20,6 +20,7 @@ Install Newman globally:
 
 ```bash
 npm install -g newman
+```
 
 ![Newman](https://img.shields.io/badge/Newman-4FA94D?style=flat-square&logo=postman&logoColor=white)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
