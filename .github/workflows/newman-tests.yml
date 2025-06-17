@@ -2,6 +2,21 @@ name: Run Newman Tests
 
 on:
   workflow_dispatch:
+    inputs:
+      collection:
+        description: "Path to the Postman collection"
+        required: true
+        default: "collections/reqres.postman_collection.json"
+
+      environment:
+        description: "Path to the Postman environment file"
+        required: true
+        default: "environments/dev.postman_environment.json"
+
+      data:
+        description: "Optional path to data file (JSON or CSV)"
+        required: true
+        default: "data/data.json"
 
 jobs:
   run-postman-tests:
