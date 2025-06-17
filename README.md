@@ -14,10 +14,14 @@ This repository contains two API testing projects built with Postman and execute
 This project tests the ReqRes demo API with a simple CRUD flow for users.
 
 **Test coverage:**
-- `GET /users/:id`
-- `POST /users`
-- `PUT /users/:id`
-- `DELETE /users/:id`
+- User CRUD
+        - `GET /users/:id`
+        - `POST /users`
+        - `PUT /users/:id`
+        - `DELETE /users/:id`
+- Auth
+        - `POST /register`
+        - `POST /login` 
 - 🔁 Data-driven tests using `data.json`
 - ✅ Fully CI-integrated
 
@@ -59,7 +63,7 @@ Following you can see last test result:
 Alternative ways to launch collection:
 
 - Use run.sh file locally from this repository
-- CLI: newman run collections/reqres.postman_collection.json -e environments/dev.postman_environment.json -d data/data.json -r cli,html --reporter-html-export tests/report.html
+- CLI: newman run collections/{{project_name}}.postman_collection.json -e environments/{{env}}.postman_environment.json -d data/data.json -r cli,html --reporter-html-export tests/report.html
 
 
 ---
