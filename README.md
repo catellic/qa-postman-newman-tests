@@ -15,13 +15,13 @@ This project tests the ReqRes demo API with a simple CRUD flow for users.
 
 **Test coverage:**
 - User CRUD
-        - `GET /users/:id`
-        - `POST /users`
-        - `PUT /users/:id`
-        - `DELETE /users/:id`
+    - `GET /users/:id`
+    - `POST /users`
+    - `PUT /users/:id`
+    - `DELETE /users/:id`
 - Auth
-        - `POST /register`
-        - `POST /login` 
+    - `POST /register`
+    - `POST /login` 
 - 🔁 Data-driven tests using `data.json`
 - ✅ Fully CI-integrated
 
