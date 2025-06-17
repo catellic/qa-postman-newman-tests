@@ -29,7 +29,7 @@ npm install -g newman
 ```
 You can run the postman collection clicking on the following badge:
 
-![Newman Tests](https://github.com/catellic/qa-postman-newman-tests/actions/workflows/newman-tests.yml/badge.svg)
+![Newman Tests](https://github.com/catellic/qa-postman-newman-tests/actions/workflows/newman-tests.yml)
 
 ---
 
