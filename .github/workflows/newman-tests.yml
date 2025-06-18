@@ -53,8 +53,7 @@ jobs:
         run: pwd
 
       - name: List all contents of repo
-        run: | 
-          ls -R
+        run: ls -R
 
       - name: List collection folder contents
         run: ls -l projects/${{ github.event.inputs.project_name }}/collection/
