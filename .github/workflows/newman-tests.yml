@@ -58,3 +58,9 @@ jobs:
             -r cli,junit,htmlextra \
             --reporter-junit-export newman/results.xml \
             --reporter-htmlextra-export newman/report.html
+
+      - name: Upload Newman HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report-${{ github.event.inputs.project_name }}
+          path: newman/report.html
