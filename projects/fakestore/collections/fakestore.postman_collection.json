@@ -282,7 +282,14 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": "The fake store doesn't actually need auth, but we will add it for demo purposes",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/users",
 							"host": [
@@ -342,15 +349,21 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/users/2",
+							"raw": "{{base_url}}/users/{{user_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								"2"
+								"{{user_id}}"
 							]
 						}
 					},
@@ -390,7 +403,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/users?limit=3&sort=desc",
 							"host": [
@@ -450,6 +469,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -503,11 +527,16 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"c.catelli@icloud.com\",\r\n  \"username\": \"catellic\",\r\n  \"password\": \"newpassword\",\r\n  \"name\": {\r\n    \"firstname\": \"Christian\",\r\n    \"lastname\": \"Catelli\"\r\n  },\r\n  \"address\": {\r\n    \"city\": \"Novara\",\r\n    \"street\": \"Via tutti\",\r\n    \"number\": 3,\r\n    \"zipcode\": \"28066\",\r\n    \"geolocation\": {\r\n      \"lat\": \"45.446911218195325\",\r\n      \"long\": \"8.61645775775035\"\r\n    }\r\n  },\r\n  \"phone\": \"33312341212\"\r\n}\r\n",
+							"raw": "{{user_patch}}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -552,6 +581,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
 								"type": "text"
 							}
 						],
@@ -598,7 +632,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/carts",
 							"host": [
@@ -623,50 +663,52 @@
 									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
 									"})\r",
 									"\r",
-									"//Lets validate data in the response\r",
-									"\r",
-									"var res = pm.response.json()\r",
-									"\r",
-									"pm.test(\"Response body is a valid JSON\", function() {\r",
-									"    pm.expect(res).to.be.an('object');\r",
-									"});\r",
-									"\r",
-									"// User has required properties\r",
-									"pm.test(\"Response contains required properties\", function () {\r",
-									"    pm.expect(res).to.have.all.keys('address', 'id', 'email', 'username', 'password', 'name', 'phone', '__v');\r",
-									"});\r",
-									"\r",
-									"// Address property object check\r",
-									"pm.test(\"Address object has required properties\", function() {\r",
-									"    pm.expect(res.address).to.have.all.keys('geolocation', 'city', 'street', 'number', 'zipcode');\r",
-									"});\r",
-									"\r",
-									"// Geolocation property object check\r",
-									"pm.test(\"Geolocation object has required properties\", function() {\r",
-									"    pm.expect(res.address.geolocation).to.have.all.keys('lat', 'long');\r",
-									"});\r",
-									"\r",
-									"// Name property object check\r",
-									"pm.test(\"Name object has required properties\", function() {\r",
-									"    pm.expect(res.name).to.have.all.keys('firstname', 'lastname');\r",
-									"});"
+									"// This test is not logically correct that passes anyway, because the fakestore doesn't register the new previously added cart, but simulates the response with a new id. Retrieving a cart with that id will return a null body because it doesn't actually exhist\r",
+									"// To have a not null response body, we could force the cart_id in the url of request with a value between 1 and 10, which are mocked by fakestore api\r",
+									"pm.test(\"check body response\", function(){\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).to.eq(null);\r",
+									"})"
 								],
 								"type": "text/javascript",
 								"packages": {}
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{cart_id}},\r\n    \"userId\": {{user_id}},\r\n    \"products\": [\r\n        {\r\n            \"id\": 0,\r\n            \"title\": \"string\",\r\n            \"price\": 0.1,\r\n            \"description\": \"string\",\r\n            \"category\": \"string\",\r\n            \"image\": \"http://example.com\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{base_url}}/carts/2",
+							"raw": "{{base_url}}/carts/{{cart_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"carts",
-								"2"
+								"{{cart_id}}"
 							]
 						}
 					},
@@ -679,7 +721,13 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"pm.test(\"200 check\", function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"save cart id\", function(){\r",
+									"    pm.environment.set(\"cart_id\", pm.response.json().id)\r",
+									"})"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -693,11 +741,16 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\r\n    \"id\": 0,\r\n    \"userId\": 0,\r\n    \"products\": [\r\n        {\r\n            \"id\": 0,\r\n            \"title\": \"string\",\r\n            \"price\": 0.1,\r\n            \"description\": \"string\",\r\n            \"category\": \"string\",\r\n            \"image\": \"http://example.com\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -717,7 +770,7 @@
 					"response": []
 				},
 				{
-					"name": "patch-cart",
+					"name": "update-cart",
 					"event": [
 						{
 							"listen": "test",
@@ -728,10 +781,41 @@
 									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
 									"})\r",
 									"\r",
-									"// check that id is created\r",
-									"pm.test(\"password was changed\", function() {\r",
-									"    pm.expect(pm.response.json()).to.have.property(\"password\").to.eql(\"newpassword\")\r",
-									"})\r",
+									"\r",
+									"pm.test(\"Response has the required fields - id, userId, and products\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"    pm.expect(res).to.have.all.keys('id', 'userId', 'products');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Products array contains at least one product object\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"    pm.expect(res.products).to.be.an('array').that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate that the title is a non-empty string and price is a non-negative number\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    \r",
+									"    // Validate response format\r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"    pm.expect(res.products).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    // Check that each product in the products array has a correct title and over zero price.\r",
+									"    res.products.forEach(function(product) {\r",
+									"        pm.expect(product.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Title should not be empty\");\r",
+									"        pm.expect(product.price).to.be.a('number').and.to.be.at.least(0, \"Price should be a non-negative number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eq('application/json');\r",
+									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript",
@@ -740,17 +824,22 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{{cart_update}}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -796,6 +885,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -815,7 +909,588 @@
 		},
 		{
 			"name": "products",
-			"item": []
+			"item": [
+				{
+					"name": "get-products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Test for status code\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test for response body structure\r",
+									"pm.test(\"Response is an array\", () => {\r",
+									"    pm.expect(response).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Test for each product object in the response\r",
+									"response.forEach(product => {\r",
+									"    pm.test(`Product with id ${product.id} has required fields`, () => {\r",
+									"        pm.expect(product).to.have.all.keys(\"id\", \"title\", \"price\", \"description\", \"category\", \"image\", \"rating\");\r",
+									"        pm.expect(product.title).to.be.a(\"string\");\r",
+									"        pm.expect(product.price).to.be.a(\"number\");\r",
+									"        pm.expect(product.description).to.be.a(\"string\");\r",
+									"        pm.expect(product.category).to.be.a(\"string\");\r",
+									"        pm.expect(product.image).to.be.a(\"string\");\r",
+									"        pm.expect(product.rating).to.be.an(\"object\");\r",
+									"        pm.expect(product.rating).to.have.all.keys(\"rate\", \"count\");\r",
+									"        pm.expect(product.rating.rate).to.be.a(\"number\");\r",
+									"        pm.expect(product.rating.count).to.be.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test for Content-Type header\r",
+									"pm.test(\"Content-Type is application/json\", () => {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-specific-products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Save specific product\", function () {\r",
+									"    pm.environment.set(\"specific_product\", JSON.stringify(pm.response.json()))\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-new-product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Save product ID\", function(){\r",
+									"    pm.environment.set(\"product_id\", pm.response.json().id)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"title\": \"test\",\r\n  \"price\": 10.1,\r\n  \"description\": \"test\",\r\n  \"category\": \"test\",\r\n  \"image\": \"http://example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check that response equals to body\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var res = pm.response.json(); //this is actually a json\r",
+									"    var bod = JSON.parse(pm.request.body.raw); //this is a json string\r",
+									"\r",
+									"    //var res = JSON.stringify(pm.response.json()); //this is actually a json\r",
+									"    //var bod = pm.request.body.raw; //this is a json string\r",
+									"    \r",
+									"    //console.log(res,\"\\n\")\r",
+									"    //console.log(bod,\"\\n\")\r",
+									"\r",
+									"    pm.expect(res).to.deep.equal(bod); //this is the assertion that will fail due to mocked response of server, but is logically correct\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{product_update}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "End-2-End flow",
+			"item": [
+				{
+					"name": "add-user Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Ok\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"// check that id is created\r",
+									"\r",
+									"pm.test(\"ID assigned\", function() {\r",
+									"    pm.expect(pm.response).to.have.property(\"id\")\r",
+									"})\r",
+									"\r",
+									"\r",
+									"// save new id in environment\r",
+									"pm.test(\"ID saved\", function(){\r",
+									"    pm.environment.set(\"user_id\",pm.response.json().id)\r",
+									"    console.log(pm.response.json().id)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"c.catelli@icloud.com\",\r\n  \"username\": \"catellic\",\r\n  \"password\": \"password\",\r\n  \"name\": {\r\n    \"firstname\": \"Christian\",\r\n    \"lastname\": \"Catelli\"\r\n  },\r\n  \"address\": {\r\n    \"city\": \"Novara\",\r\n    \"street\": \"Via tutti\",\r\n    \"number\": 3,\r\n    \"zipcode\": \"28066\",\r\n    \"geolocation\": {\r\n      \"lat\": \"45.446911218195325\",\r\n      \"long\": \"8.61645775775035\"\r\n    }\r\n  },\r\n  \"phone\": \"33312341212\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-specific-user Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 successfull\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"//Lets validate data in the response\r",
+									"\r",
+									"var res = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Response body is a valid JSON\", function() {\r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"// User has required properties\r",
+									"pm.test(\"Response contains required properties\", function () {\r",
+									"    pm.expect(res).to.have.all.keys('address', 'id', 'email', 'username', 'password', 'name', 'phone', '__v');\r",
+									"});\r",
+									"\r",
+									"// Address property object check\r",
+									"pm.test(\"Address object has required properties\", function() {\r",
+									"    pm.expect(res.address).to.have.all.keys('geolocation', 'city', 'street', 'number', 'zipcode');\r",
+									"});\r",
+									"\r",
+									"// Geolocation property object check\r",
+									"pm.test(\"Geolocation object has required properties\", function() {\r",
+									"    pm.expect(res.address.geolocation).to.have.all.keys('lat', 'long');\r",
+									"});\r",
+									"\r",
+									"// Name property object check\r",
+									"pm.test(\"Name object has required properties\", function() {\r",
+									"    pm.expect(res.name).to.have.all.keys('firstname', 'lastname');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-success Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login successfull\", function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Save generated token\", function(){\r",
+									"    pm.environment.set(\"token\", pm.response.token)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"{{username}}\",\r\n    \"password\":\"{{password}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-specific-products Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Save specific product\", function () {\r",
+									"    pm.environment.set(\"specific_product\", JSON.stringify(pm.response.json()))\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-cart Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Ok\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - id, userId, and products\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"    pm.expect(res).to.have.all.keys('id', 'userId', 'products');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Products array contains at least one product object\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"    pm.expect(res.products).to.be.an('array').that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate that the title is a non-empty string and price is a non-negative number\", function () {\r",
+									"    const res = pm.response.json();\r",
+									"    \r",
+									"    // Validate response format\r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"    pm.expect(res.products).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    // Check that each product in the products array has a correct title and over zero price.\r",
+									"    res.products.forEach(function(product) {\r",
+									"        pm.expect(product.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Title should not be empty\");\r",
+									"        pm.expect(product.price).to.be.a('number').and.to.be.at.least(0, \"Price should be a non-negative number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eq('application/json');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{cart_update}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/carts/{{cart_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								"{{cart_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This can partially simulate a real user experience and business flow\n\n- New user is registered, then logs in.\n    \n- Finds a product and adds it to cart.\n    \n\nA real world scenario would be much more complex than this, clearing cache, logging out and other things."
 		}
 	]
 }

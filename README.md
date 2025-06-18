@@ -39,6 +39,8 @@ This project focuses on authentication, product and user management, using real-
 - 🔁 Data-driven scenarios with chaining
 - 🔐 Header injection + variable scoping
 
+Although the API does not enforce authentication on endpoints, this collection applies Bearer token usage to simulate real-world security practices.
+
 ---
 
 ## 🛠 Requirements
