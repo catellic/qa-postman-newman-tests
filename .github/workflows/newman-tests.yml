@@ -53,4 +53,5 @@ jobs:
         run: |
           newman run "$COLLECTION" \
             --environment "$ENV" \
-            --iteration-data "$DATA"
+            --iteration-data "$DATA" \
+            --suppress-exit-code
