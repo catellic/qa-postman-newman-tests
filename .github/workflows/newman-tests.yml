@@ -11,6 +11,10 @@ on:
         description: 'Env (es. dev, test, uat)'
         required: true
         default: 'dev'
+      data_name:
+        description: 'Data file for iteration'
+        required: true
+        default: 'data'
 
 jobs:
   run-tests:
@@ -25,7 +29,7 @@ jobs:
           echo "PROJECT=${{ github.event.inputs.project_name }}" >> $GITHUB_ENV
           echo "ENV_NAME=${{ github.event.inputs.env_name }}" >> $GITHUB_ENV
           echo "COLLECTION=projects/${{ github.event.inputs.project_name }}/collection/${{ github.event.inputs.project_name }}.postman_collection.json" >> $GITHUB_ENV
-          echo "DATA=projects/${{ github.event.inputs.project_name }}/Data/${{ github.event.inputs.project_name }}.json" >> $GITHUB_ENV
+          echo "DATA=projects/${{ github.event.inputs.project_name }}/data/${{ github.event.inputs.data_name }}.json" >> $GITHUB_ENV
           echo "ENV=projects/${{ github.event.inputs.project_name }}/environments/${{ github.event.inputs.env_name }}.postman_environment.json" >> $GITHUB_ENV
 
       - name: List environment folder contents
