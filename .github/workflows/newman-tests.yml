@@ -56,10 +56,10 @@ jobs:
         run: ls -R
 
       - name: List collection folder contents
-        run: ls -l projects/${{ github.event.inputs.project_name }}/collection/
+        run: ls -l ./projects/${{ github.event.inputs.project_name }}/collection/
 
       - name: Run Newman Tests
         run: |
-          newman run "$COLLECTION" \
-            --environment "$ENV" \
-            --iteration-data "$DATA"
+          newman run ./"$COLLECTION" \
+            --environment ./"$ENV" \
+            --iteration-data ./"$DATA"
