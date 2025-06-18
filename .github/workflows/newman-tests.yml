@@ -1,12 +1,16 @@
-name: Run Postman Tests for Project
+name: Run Postman Tests for Project with Environment
 
 on:
   workflow_dispatch:
     inputs:
       project_name:
-        description: 'Nome del progetto'
+        description: 'Project name to test'
         required: true
         default: ''
+      env_name:
+        description: 'Env (es. dev, test, uat)'
+        required: true
+        default: 'dev'
 
 jobs:
   run-tests:
@@ -17,24 +21,28 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set variables for project files
-        id: vars
         run: |
           echo "PROJECT=${{ github.event.inputs.project_name }}" >> $GITHUB_ENV
-          echo "COLLECTION=projects/${{ github.event.inputs.project_name }}/Collection/${{ github.event.inputs.project_name }}.postman_collection.json" >> $GITHUB_ENV
-          echo "DATA=projects/${{ github.event.inputs.project_name }}/Data/${{ github.event.inputs.project_name }}.json" >> $GITHUB_ENV
-          echo "ENV=projects/${{ github.event.inputs.project_name }}/Environments/${{ github.event.inputs.project_name }}.postman_environment.json" >> $GITHUB_ENV
+          echo "ENV_NAME=${{ github.event.inputs.env_name }}" >> $GITHUB_ENV
+          echo "COLLECTION=projects/$PROJECT/Collection/${PROJECT}.postman_collection.json" >> $GITHUB_ENV
+          echo "DATA=projects/$PROJECT/Data/${PROJECT}.json" >> $GITHUB_ENV
+          echo "ENV=projects/$PROJECT/Environments/${ENV_NAME}.postman_environment.json" >> $GITHUB_ENV
 
-      - name: Show paths
+      - name: List environment folder contents
+        run: ls -l projects/$PROJECT/Environments/
+
+      - name: Verify environment file exists
         run: |
-          echo "Collection path: $COLLECTION"
-          echo "Data path: $DATA"
-          echo "Environment path: $ENV"
+          if [ ! -f "$ENV" ]; then
+            echo "ERROR: Environment file $ENV not found!"
+            exit 1
+          fi
 
-      # Esempio: esecuzione test con Newman
+      - name: Install Newman
+        run: npm install -g newman
+
       - name: Run Newman Tests
-        uses: actions/setup-node@v4
-      - run: |
-          npm install -g newman
+        run: |
           newman run "$COLLECTION" \
             --environment "$ENV" \
             --iteration-data "$DATA"
