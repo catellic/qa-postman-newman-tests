@@ -1,0 +1,821 @@
+{
+	"info": {
+		"_postman_id": "14fa8ff0-a13e-4c26-b7d6-e655217f1658",
+		"name": "fakestore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45967406"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login-fail-unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"401 Unauthorized\", function(){\r",
+									"    pm.response.to.have.status(401)\r",
+									"    pm.response.to.have.body(\"username or password is incorrect\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"error\",\r\n    \"password\":\"error\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-fail-bad-request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"400 Bad Request\", function(){\r",
+									"    pm.response.to.have.status(400)\r",
+									"    pm.response.to.have.body(\"username and password are not provided in JSON format\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-fail-blank-password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"401 Unauthorized\", function(){\r",
+									"    pm.response.to.have.status(401)\r",
+									"    pm.response.to.have.body(\"username or password is incorrect\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"{{username}}\",\r\n    \"password\":\" \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-fail-blank-username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"401 Unauthorized\", function(){\r",
+									"    pm.response.to.have.status(401)\r",
+									"    pm.response.to.have.body(\"username or password is incorrect\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\" \",\r\n    \"password\":\"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login successfull\", function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Save generated token\", function(){\r",
+									"    pm.environment.set(\"token\", pm.response.token)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"{{username}}\",\r\n    \"password\":\"{{password}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "get-all-users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 successfull\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"    \r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body is an array\", function () {\r",
+									"    pm.expect(Array.isArray(pm.response.json())).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-specific-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 successfull\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"//Lets validate data in the response\r",
+									"\r",
+									"var res = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Response body is a valid JSON\", function() {\r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"// User has required properties\r",
+									"pm.test(\"Response contains required properties\", function () {\r",
+									"    pm.expect(res).to.have.all.keys('address', 'id', 'email', 'username', 'password', 'name', 'phone', '__v');\r",
+									"});\r",
+									"\r",
+									"// Address property object check\r",
+									"pm.test(\"Address object has required properties\", function() {\r",
+									"    pm.expect(res.address).to.have.all.keys('geolocation', 'city', 'street', 'number', 'zipcode');\r",
+									"});\r",
+									"\r",
+									"// Geolocation property object check\r",
+									"pm.test(\"Geolocation object has required properties\", function() {\r",
+									"    pm.expect(res.address.geolocation).to.have.all.keys('lat', 'long');\r",
+									"});\r",
+									"\r",
+									"// Name property object check\r",
+									"pm.test(\"Name object has required properties\", function() {\r",
+									"    pm.expect(res.name).to.have.all.keys('firstname', 'lastname');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-limited-and-sorted-users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 successfull\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"//Lets validate data in the response\r",
+									"\r",
+									"var res = pm.response.json()\r",
+									"\r",
+									"// this func could become an util since multiple use\r",
+									"pm.test(\"Body is an array\", function () {\r",
+									"    pm.expect(Array.isArray(pm.response.json())).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is an array of specified length in parameters\", function(){\r",
+									"    pm.expect(res).to.have.length(3)\r",
+									"    pm.expect(res).to.be.an('array').that.has.lengthOf(3);\r",
+									"    console.log(res, res.length)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users?limit=3&sort=desc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "3"
+								},
+								{
+									"key": "sort",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Ok\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"// check that id is created\r",
+									"\r",
+									"pm.test(\"ID assigned\", function() {\r",
+									"    pm.expect(pm.response).to.have.property(\"id\")\r",
+									"})\r",
+									"\r",
+									"\r",
+									"// save new id in environment\r",
+									"pm.test(\"ID saved\", function(){\r",
+									"    pm.environment.set(\"user_id\",pm.response.json().id)\r",
+									"    console.log(pm.response.json().id)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"c.catelli@icloud.com\",\r\n  \"username\": \"catellic\",\r\n  \"password\": \"password\",\r\n  \"name\": {\r\n    \"firstname\": \"Christian\",\r\n    \"lastname\": \"Catelli\"\r\n  },\r\n  \"address\": {\r\n    \"city\": \"Novara\",\r\n    \"street\": \"Via tutti\",\r\n    \"number\": 3,\r\n    \"zipcode\": \"28066\",\r\n    \"geolocation\": {\r\n      \"lat\": \"45.446911218195325\",\r\n      \"long\": \"8.61645775775035\"\r\n    }\r\n  },\r\n  \"phone\": \"33312341212\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Ok\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"// check that id is created\r",
+									"pm.test(\"password was changed\", function() {\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"password\").to.eql(\"newpassword\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"c.catelli@icloud.com\",\r\n  \"username\": \"catellic\",\r\n  \"password\": \"newpassword\",\r\n  \"name\": {\r\n    \"firstname\": \"Christian\",\r\n    \"lastname\": \"Catelli\"\r\n  },\r\n  \"address\": {\r\n    \"city\": \"Novara\",\r\n    \"street\": \"Via tutti\",\r\n    \"number\": 3,\r\n    \"zipcode\": \"28066\",\r\n    \"geolocation\": {\r\n      \"lat\": \"45.446911218195325\",\r\n      \"long\": \"8.61645775775035\"\r\n    }\r\n  },\r\n  \"phone\": \"33312341212\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Ok\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cart",
+			"item": [
+				{
+					"name": "get-all-carts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 successfull\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"    \r",
+									"})\r",
+									"\r",
+									"pm.test(\"Body is an array\", function () {\r",
+									"    pm.expect(Array.isArray(pm.response.json())).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/carts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-specific-cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 successfull\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"//Lets validate data in the response\r",
+									"\r",
+									"var res = pm.response.json()\r",
+									"\r",
+									"pm.test(\"Response body is a valid JSON\", function() {\r",
+									"    pm.expect(res).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"// User has required properties\r",
+									"pm.test(\"Response contains required properties\", function () {\r",
+									"    pm.expect(res).to.have.all.keys('address', 'id', 'email', 'username', 'password', 'name', 'phone', '__v');\r",
+									"});\r",
+									"\r",
+									"// Address property object check\r",
+									"pm.test(\"Address object has required properties\", function() {\r",
+									"    pm.expect(res.address).to.have.all.keys('geolocation', 'city', 'street', 'number', 'zipcode');\r",
+									"});\r",
+									"\r",
+									"// Geolocation property object check\r",
+									"pm.test(\"Geolocation object has required properties\", function() {\r",
+									"    pm.expect(res.address.geolocation).to.have.all.keys('lat', 'long');\r",
+									"});\r",
+									"\r",
+									"// Name property object check\r",
+									"pm.test(\"Name object has required properties\", function() {\r",
+									"    pm.expect(res.name).to.have.all.keys('firstname', 'lastname');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/carts/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/carts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch-cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Ok\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									"// check that id is created\r",
+									"pm.test(\"password was changed\", function() {\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"password\").to.eql(\"newpassword\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/carts/{{cart_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								"{{cart_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Ok\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/carts/{{cart_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"carts",
+								"{{cart_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": []
+		}
+	]
+}
