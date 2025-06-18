@@ -54,4 +54,7 @@ jobs:
           newman run "$COLLECTION" \
             --environment "$ENV" \
             --iteration-data "$DATA" \
-            --suppress-exit-code
+            --suppress-exit-code \
+            -r cli,junit,htmlextra \
+            --reporter-junit-export newman/results.xml \
+            --reporter-htmlextra-export newman/report.html
