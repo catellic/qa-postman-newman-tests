@@ -32,7 +32,7 @@ jobs:
 
       # Esempio: esecuzione test con Newman
       - name: Run Newman Tests
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
       - run: |
           npm install -g newman
           newman run "$COLLECTION" \
