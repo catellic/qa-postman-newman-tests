@@ -264,11 +264,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"200 successfull\", function () {\r",
-									"    pm.expect(pm.response.code).to.equal(200);\r",
-									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
-									"    \r",
-									"})\r",
+									"pm.test(\"Status code is 200 and response time less than half a second\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500); // 500 milliseconds\r",
+									"});\r",
 									"\r",
 									"pm.test(\"Body is an array\", function () {\r",
 									"    pm.expect(Array.isArray(pm.response.json())).to.be.true;\r",
@@ -309,10 +308,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"200 successfull\", function () {\r",
-									"    pm.expect(pm.response.code).to.equal(200);\r",
-									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
-									"})\r",
+									"pm.test(\"Status code is 200 and response time less than half a second\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500); // 500 milliseconds\r",
+									"});\r",
 									"\r",
 									"//Lets validate data in the response\r",
 									"\r",
@@ -376,10 +375,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"200 successfull\", function () {\r",
-									"    pm.expect(pm.response.code).to.equal(200);\r",
-									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
-									"})\r",
+									"pm.test(\"Status code is 200 and response time less than half a second\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500); // 500 milliseconds\r",
+									"});\r",
 									"\r",
 									"//Lets validate data in the response\r",
 									"\r",
@@ -521,7 +520,7 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -614,11 +613,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"200 successfull\", function () {\r",
-									"    pm.expect(pm.response.code).to.equal(200);\r",
-									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
-									"    \r",
-									"})\r",
+									"pm.test(\"Status code is 200 and response time less than half a second\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500); // 500 milliseconds\r",
+									"});\r",
 									"\r",
 									"pm.test(\"Body is an array\", function () {\r",
 									"    pm.expect(Array.isArray(pm.response.json())).to.be.true;\r",
@@ -658,10 +656,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"200 successfull\", function () {\r",
-									"    pm.expect(pm.response.code).to.equal(200);\r",
-									"    pm.expect(pm.response).to.have.property('status', 'OK');\r",
-									"})\r",
+									"pm.test(\"Status code is 200 and response time less than half a second\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500); // 500 milliseconds\r",
+									"});\r",
 									"\r",
 									"// This test is not logically correct that passes anyway, because the fakestore doesn't register the new previously added cart, but simulates the response with a new id. Retrieving a cart with that id will return a null body because it doesn't actually exhist\r",
 									"// To have a not null response body, we could force the cart_id in the url of request with a value between 1 and 10, which are mocked by fakestore api\r",
@@ -920,8 +918,9 @@
 									"const response = pm.response.json();\r",
 									"\r",
 									"// Test for status code\r",
-									"pm.test(\"Status code is 200\", () => {\r",
+									"pm.test(\"Status code is 200 and response time less than half a second\", () => {\r",
 									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500); // 500 milliseconds\r",
 									"});\r",
 									"\r",
 									"// Test for response body structure\r",
@@ -989,6 +988,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"pm.test(\"Status code is 200 and response time less than half a second\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500); // 500 milliseconds\r",
+									"});\r",
+									"\r",
 									"pm.test(\"Save specific product\", function () {\r",
 									"    pm.environment.set(\"specific_product\", JSON.stringify(pm.response.json()))\r",
 									"})"
@@ -1065,13 +1069,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/products/",
+							"raw": "{{base_url}}/products",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"products",
-								""
+								"products"
 							]
 						}
 					},
