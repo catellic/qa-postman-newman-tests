@@ -52,9 +52,9 @@ jobs:
       - name: List current dir
         run: pwd
 
-      - name: List all project files
+      - name: List all contents of repo
         run: | 
-          ls -R projects
+          ls -R
 
       - name: List collection folder contents
         run: ls -l projects/${{ github.event.inputs.project_name }}/collection/
