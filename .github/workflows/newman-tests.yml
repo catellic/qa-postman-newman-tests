@@ -24,12 +24,12 @@ jobs:
         run: |
           echo "PROJECT=${{ github.event.inputs.project_name }}" >> $GITHUB_ENV
           echo "ENV_NAME=${{ github.event.inputs.env_name }}" >> $GITHUB_ENV
-          echo "COLLECTION=projects/$PROJECT/Collection/${PROJECT}.postman_collection.json" >> $GITHUB_ENV
+          echo "COLLECTION=projects/$PROJECT/collection/${PROJECT}.postman_collection.json" >> $GITHUB_ENV
           echo "DATA=projects/$PROJECT/Data/${PROJECT}.json" >> $GITHUB_ENV
-          echo "ENV=projects/$PROJECT/Environments/${ENV_NAME}.postman_environment.json" >> $GITHUB_ENV
+          echo "ENV=projects/$PROJECT/environments/${ENV_NAME}.postman_environment.json" >> $GITHUB_ENV
 
       - name: List environment folder contents
-        run: ls -l projects/$PROJECT/Environments/
+        run: ls -l projects/$PROJECT/environments/
 
       - name: Verify environment file exists
         run: |
