@@ -1,52 +1,40 @@
-name: Run Newman Tests
+name: Run Postman Tests for Project
 
 on:
   workflow_dispatch:
     inputs:
-      collection:
-        description: "Path to the Postman collection"
+      project_name:
+        description: 'Nome del progetto'
         required: true
-        default: "collections/reqres.postman_collection.json"
-
-      environment:
-        description: "Path to the Postman environment file"
-        required: true
-        default: "environments/dev.postman_environment.json"
-
-      data:
-        description: "Path to data file (JSON or CSV)"
-        required: true
-        default: "data/data.json"
+        default: ''
 
 jobs:
-  run-postman-tests:
+  run-tests:
     runs-on: ubuntu-latest
 
     steps:
-    - name: ⬇️ Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: 🟢 Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      - name: Set variables for project files
+        id: vars
+        run: |
+          echo "PROJECT=${{ github.event.inputs.project_name }}" >> $GITHUB_ENV
+          echo "COLLECTION=projects/${{ github.event.inputs.project_name }}/Collection/${{ github.event.inputs.project_name }}.postman_collection.json" >> $GITHUB_ENV
+          echo "DATA=projects/${{ github.event.inputs.project_name }}/Data/${{ github.event.inputs.project_name }}.json" >> $GITHUB_ENV
+          echo "ENV=projects/${{ github.event.inputs.project_name }}/Environments/${{ github.event.inputs.project_name }}.postman_environment.json" >> $GITHUB_ENV
 
-    - name: 📦 Install Newman
-      run: npm install -g newman
+      - name: Show paths
+        run: |
+          echo "Collection path: $COLLECTION"
+          echo "Data path: $DATA"
+          echo "Environment path: $ENV"
 
-    - name: 📦 Install Newman Reporter
-      run: npm install -g newman-reporter-html
-
-    - name: ▶️ Run Newman tests with HTML Report
-      run: |
-        newman run collections/reqres.postman_collection.json \
-          -e environments/dev.postman_environment.json \
-          -d data/data.json \
-          -r cli,html \
-          --reporter-html-export tests/report.html || true
-
-    - name: 📤 Upload HTML Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: newman-html-report
-        path: tests/report.html
+      # Esempio: esecuzione test con Newman
+      - name: Run Newman Tests
+        uses: actions/setup-node@v3
+      - run: |
+          npm install -g newman
+          newman run "$COLLECTION" \
+            --environment "$ENV" \
+            --iteration-data "$DATA"
