@@ -49,6 +49,9 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
+      - name: List collection folder contents
+        run: ls -l projects/${{ github.event.inputs.project_name }}/collection/
+
       - name: Run Newman Tests
         run: |
           newman run "$COLLECTION" \
